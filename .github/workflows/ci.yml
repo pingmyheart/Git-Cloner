@@ -34,14 +34,21 @@ jobs:
         run: |
           python builder.py
 
-      - name: Rename artifact with OS suffix
+      - name: Rename output for OS
         run: |
-          mv dist/cloner cloner-${{ runner.os }} || mv dist/cloner.exe cloner-${{ runner.os }}.exe
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+              mv dist/cloner.exe cloner-Windows.exe
+            elif [[ "${{ runner.os }}" == "macOS" ]]; then
+              mv dist/cloner cloner-macOS
+            else
+              mv dist/cloner cloner-Linux
+            fi
+        shell: bash
 
       - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            cloner-${{ runner.os }}*
+            cloner-*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
