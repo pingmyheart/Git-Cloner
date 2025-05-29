@@ -52,8 +52,13 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            windows/*
-            macOS/*
-            linux/*
+            if [[ "${{ runner.os }}" == "Windows" ]]; then
+              windows/*
+            elif [[ "${{ runner.os }}" == "macOS" ]]; then
+              macOS/*
+            else
+              linux/*
+            fi
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
