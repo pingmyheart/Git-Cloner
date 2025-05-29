@@ -37,12 +37,15 @@ jobs:
       - name: Rename output for OS
         run: |
           if [[ "${{ runner.os }}" == "Windows" ]]; then
-              mv dist/cloner.exe windows/cloner.exe
-            elif [[ "${{ runner.os }}" == "macOS" ]]; then
-              mv dist/cloner macOS/cloner
-            else
-              mv dist/cloner linux/cloner
-            fi
+            mkdir -p windows
+            mv dist/cloner.exe windows/cloner.exe
+          elif [[ "${{ runner.os }}" == "macOS" ]]; then
+            mkdir -p macOS
+            mv dist/cloner macOS/cloner
+          else
+            mkdir -p linux
+            mv dist/cloner linux/cloner
+          fi
         shell: bash
 
       - name: Upload to GitHub Release
