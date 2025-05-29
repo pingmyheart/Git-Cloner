@@ -37,11 +37,11 @@ jobs:
       - name: Rename output for OS
         run: |
           if [[ "${{ runner.os }}" == "Windows" ]]; then
-              mv dist/cloner.exe cloner-Windows.exe
+              mv dist/cloner.exe cloner-windows.exe
             elif [[ "${{ runner.os }}" == "macOS" ]]; then
               mv dist/cloner cloner-macOS
             else
-              mv dist/cloner cloner-Linux
+              mv dist/cloner cloner-linux
             fi
         shell: bash
 
