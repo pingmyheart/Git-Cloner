@@ -1,4 +1,5 @@
 import os
+import platform
 
 import PyInstaller.__main__ as pyinstaller
 
@@ -27,7 +28,7 @@ excluded_files = ["*.env",
                   "**/.env"]
 pyinstaller_commands = ["--onefile",
                         "--name",
-                        "cloner"]
+                        f"cloner-{platform.system()}"]
 
 for hidden_import in hidden_imports:
     pyinstaller_commands.append("--hidden-import")

@@ -1,54 +1,23 @@
-name: Build and Release Executables
-
+name: CI
+# Triggers
 on:
+  workflow_dispatch: # Manual trigger from the Actions tab
   push:
+    branches:
+      - '**'
     tags:
-      - 'v*'  # Trigger on version tags like v1.0.0
+      - 'v*'
+
+permissions:
+  contents: write
+  packages: write
+  pages: write
+  actions: write
 
 jobs:
-  build:
-    name: Build on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ ubuntu-22.04, windows-latest, macos-latest ]
-    permissions:
-      contents: write
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pyinstaller
-
-      - name: Build executable
-        run: |
-          python builder.py
-
-      - name: Rename output for OS
-        run: |
-          if [[ "${{ runner.os }}" == "Windows" ]]; then
-              mv dist/cloner.exe cloner-windows.exe
-            elif [[ "${{ runner.os }}" == "macOS" ]]; then
-              mv dist/cloner cloner-macOS
-            else
-              mv dist/cloner cloner-linux
-            fi
-        shell: bash
-
-      - name: Upload to GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            cloner-*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  ci:
+    secrets: inherit
+    uses: pingmyheart/Ping-Actions/.github/workflows/dispatcher.yml@main
+    with:
+      project-type: python-executable
+      python-version: 3.10
