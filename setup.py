@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
-from __version__ import version
+from __version='0.0.2',
 
 setup(
     name="cloner",
-    version=version,
+    version='0.0.2',
     packages=find_packages(),
     description="Command-Line Interface to manage gitlab or github repositories.",
     author="Antonio Russi",
